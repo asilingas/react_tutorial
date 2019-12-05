@@ -1,0 +1,37 @@
+version: '2'
+services:
+    db:
+        image: mariadb:10.0.38
+        volumes:
+            - './docker-compose/mariadb/.data:/var/lib/mysql'
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: react
+            MYSQL_USER: react
+            MYSQL_PASSWORD: react
+        expose:
+            - '3306'
+        ports:
+            - '3307:3306'
+    php:
+        build: './docker-compose/php'
+        expose:
+            - '9000'
+        volumes:
+            - './docker-compose/php/php.ini:/usr/local/etc/php/php.ini:ro'
+            - '.:/var/www/practice/react'
+        working_dir: '/var/www/practice/react'
+        links:
+            - db
+    web:
+        image: 'nginx:1.10.0'
+        ports:
+            - '8090:80'
+        environment:
+            - NGINX_HOST=www.react.local
+            - NGINX_PORT=80
+        volumes:
+            - './docker-compose/nginx/app.conf:/etc/nginx/conf.d/default.conf'
+            - '.:/var/www/practice/react'
+        links:
+            - php
