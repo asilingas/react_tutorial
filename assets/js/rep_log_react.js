@@ -1,7 +1,10 @@
 import React from 'react';
-import ReactDom from 'react-dom';
+import { render } from 'react-dom';
+import RepLogApp from './RepLog/RepLogApp';
 
-const el = <h2>Lift Stuff! <span>❤️</span></h2>;
+const shouldShowHeart = true;
 
-
-ReactDom.render(el, document.getElementById('lift-stuff-app'));
+render(
+    <RepLogApp withHeart={shouldShowHeart} />,
+    document.getElementById('lift-stuff-app')
+);
