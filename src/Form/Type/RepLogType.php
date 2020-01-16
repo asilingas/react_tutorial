@@ -17,7 +17,8 @@ class RepLogType extends AbstractType
             ->add('reps', IntegerType::class)
             ->add('item', ChoiceType::class, array(
                 'choices' => RepLog::getThingsYouCanLiftChoices(),
-                'placeholder' => 'What did you lift?'
+                'placeholder' => 'What did you lift?',
+                'invalid_message' => 'Lift item is not understood.'
             ))
         ;
     }
@@ -28,4 +29,4 @@ class RepLogType extends AbstractType
             'data_class' => RepLog::class
         ));
     }
-} 
+}

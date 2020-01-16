@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
+import Button from "../Components/Button";
 
 export default class RepLogCreator extends Component {
     constructor(props) {
@@ -11,13 +12,6 @@ export default class RepLogCreator extends Component {
 
         this.quantityInput = React.createRef();
         this.itemSelect = React.createRef();
-
-        this.itemOptions = [
-            {id: 'cat', text: 'cat'},
-            {id: 'fat_cat', text: 'Big Fat Cat'},
-            {id: 'laptop', text: 'My Laptop'},
-            {id: 'coffee_cup', text: 'Coffee Cup'},
-        ];
 
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
@@ -51,9 +45,15 @@ export default class RepLogCreator extends Component {
 
     render() {
         const { quantityInputError } = this.state;
+        const { validationErrorMessage, itemOptions } = this.props;
 
         return (
             <form onSubmit={this.handleFormSubmit}>
+                {validationErrorMessage && (
+                    <div className="alert alert-danger">
+                        {validationErrorMessage}
+                    </div>
+                )}
                 <div className="form-group">
                     <label className="sr-only control-label required">
                         What did you lift?
@@ -63,7 +63,7 @@ export default class RepLogCreator extends Component {
                             required="required"
                             className="form-control">
                         <option value="">What did you lift?</option>
-                        {this.itemOptions.map(option => {
+                        {itemOptions.map(option => {
                             return <option value={option.id} key={option.id}>{option.text}</option>
                         })}
                     </select>
@@ -81,7 +81,10 @@ export default class RepLogCreator extends Component {
                     {quantityInputError && <span className="help-block">{quantityInputError}</span>}
                 </div>
                 {' '}
-                <button type="submit" className="btn btn-primary">I Lifted it!</button>
+
+                <Button type="submit" className="btn-primary">
+                    I lifted it! <span className="fa fa-plus-circle"></span>
+                </Button>
             </form>
         )
     }
@@ -89,4 +92,6 @@ export default class RepLogCreator extends Component {
 
 RepLogCreator.propTypes = {
     onAddRepLog: PropTypes.func.isRequired,
+    validationErrorMessage: PropTypes.string.isRequired,
+    itemOptions: PropTypes.array.isRequired
 }
